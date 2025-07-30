@@ -56,14 +56,32 @@ const uploadProductsExcel = async (formData) => {
 /* Report & Dashboard         */
 /* ========================== */
 
+const getDashboardStats = async () => {
+  return await instance.apiClient.get("/api/v1/reports/dashboard", {
+    headers: instance.defaultHeaders(),
+  });
+};
+
 const getLowStockReport = async () => {
   return await instance.apiClient.get("/api/v1/reports/low-stock", {
     headers: instance.defaultHeaders(),
   });
 };
 
-const getDashboardStats = async () => {
-  return await instance.apiClient.get("/api/v1/reports/dashboard", {
+const getStockByWarehouseReport = async () => {
+  return await instance.apiClient.get("/api/v1/reports/stock-by-warehouse", {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const getStockByCategoryReport = async () => {
+  return await instance.apiClient.get("/api/v1/reports/stock-by-category", {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const getOutOfStockReport = async () => {
+  return await instance.apiClient.get("/api/v1/reports/out-of-stock", {
     headers: instance.defaultHeaders(),
   });
 };
@@ -85,8 +103,11 @@ const privateAPI = {
   uploadProductsExcel,
 
   // Reports
-  getLowStockReport,
   getDashboardStats,
+  getLowStockReport,
+  getStockByWarehouseReport,
+  getStockByCategoryReport,
+  getOutOfStockReport,
 };
 
 export default privateAPI;
