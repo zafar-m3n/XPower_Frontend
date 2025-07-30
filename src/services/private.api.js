@@ -20,8 +20,8 @@ const loginUser = async (data) => {
 /* Product Functions          */
 /* ========================== */
 
-const fetchAllProducts = async () => {
-  return await instance.apiClient.get("/api/v1/products", {
+const fetchAllProducts = async (page = 1, limit = 10) => {
+  return await instance.apiClient.get(`/api/v1/products?page=${page}&limit=${limit}`, {
     headers: instance.defaultHeaders(),
   });
 };
