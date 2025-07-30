@@ -74,15 +74,16 @@ const getStockByWarehouseReport = async () => {
   });
 };
 
-const getStockByCategoryReport = async () => {
-  return await instance.apiClient.get("/api/v1/reports/stock-by-category", {
+const getOutOfStockReport = async () => {
+  return await instance.apiClient.get("/api/v1/reports/out-of-stock", {
     headers: instance.defaultHeaders(),
   });
 };
 
-const getOutOfStockReport = async () => {
-  return await instance.apiClient.get("/api/v1/reports/out-of-stock", {
+const downloadReportPDF = async (type) => {
+  return await instance.apiClient.get(`/api/v1/reports/pdf/${type}`, {
     headers: instance.defaultHeaders(),
+    responseType: "blob",
   });
 };
 
@@ -106,8 +107,8 @@ const privateAPI = {
   getDashboardStats,
   getLowStockReport,
   getStockByWarehouseReport,
-  getStockByCategoryReport,
   getOutOfStockReport,
+  downloadReportPDF,
 };
 
 export default privateAPI;
