@@ -8,6 +8,8 @@ import LoginPage from "@/pages/auth/LoginPage";
 import DashboardPage from "@/pages/dashboard";
 import ProductsPage from "@/pages/products";
 import ReportsPage from "@/pages/reports";
+import CategoriesPage from "@/pages/categories";
+import WarehousesPage from "@/pages/warehouses";
 
 import PrivateRoute from "@/components/PrivateRoute";
 import PublicRoute from "@/components/PublicRoute";
@@ -18,6 +20,8 @@ function App() {
     { path: "/dashboard", element: DashboardPage },
     { path: "/products", element: ProductsPage },
     { path: "/reports", element: ReportsPage },
+    { path: "/categories", element: CategoriesPage },
+    { path: "/warehouses", element: WarehousesPage },
   ];
 
   const publicRoutes = [

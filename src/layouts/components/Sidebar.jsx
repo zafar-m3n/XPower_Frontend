@@ -6,6 +6,8 @@ const Sidebar = ({ menuOpen }) => {
   const commonItems = [
     { label: "Dashboard", icon: "mdi:view-dashboard-outline", path: "/dashboard" },
     { label: "Products", icon: "mdi:package-variant", path: "/products" },
+    { label: "Categories", icon: "material-symbols:category-outline-rounded", path: "/categories" },
+    { label: "Warehouses", icon: "material-symbols:warehouse-outline-rounded", path: "/warehouses" },
     { label: "Reports", icon: "mdi:file-chart-outline", path: "/reports" },
     { label: "Logout", icon: "mdi:logout", action: "logout" },
   ];
