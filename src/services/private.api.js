@@ -38,12 +38,6 @@ const searchProducts = async (query) => {
   });
 };
 
-const addProductViaForm = async (data) => {
-  return await instance.apiClient.post("/api/v1/products", data, {
-    headers: instance.defaultHeaders(),
-  });
-};
-
 const uploadProductsExcel = async (formData) => {
   return await instance.apiClient.post("/api/v1/products/upload", formData, {
     headers: {
@@ -100,7 +94,6 @@ const privateAPI = {
   fetchAllProducts,
   fetchProductDetails,
   searchProducts,
-  addProductViaForm,
   uploadProductsExcel,
 
   // Reports

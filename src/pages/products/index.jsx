@@ -52,7 +52,7 @@ const Products = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <h2 className="text-2xl font-bold text-gray-800">Products</h2>
           <div className="w-fit">
-            <AccentButton text="Add Product" onClick={() => setIsModalOpen(true)} />
+            <AccentButton text="Upload Product List" onClick={() => setIsModalOpen(true)} />
           </div>
         </div>
 
