@@ -6,6 +6,7 @@ import Notification from "@/components/ui/Notification";
 import AccentButton from "@/components/ui/AccentButton";
 import ProductTable from "./components/ProductTable";
 import ViewProductModal from "./components/ViewProductModal";
+import UploadExcelModal from "./components/UploadExcelModal";
 import Pagination from "@/components/ui/Pagination";
 import ProductSearchBar from "./components/ProductSearchBar";
 
@@ -14,6 +15,7 @@ const Products = () => {
   const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -53,7 +55,7 @@ const Products = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <h2 className="text-2xl font-bold text-gray-800">Products</h2>
           <div className="w-fit">
-            <AccentButton text="Upload Product List" onClick={() => setIsModalOpen(true)} />
+            <AccentButton text="Upload Product List" onClick={() => setIsUploadModalOpen(true)} />
           </div>
         </div>
 
@@ -87,6 +89,12 @@ const Products = () => {
           setSelectedProductId(null);
         }}
         productId={selectedProductId}
+      />
+
+      <UploadExcelModal
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        onUploadSuccess={() => fetchProducts(1, searchTerm)}
       />
     </DefaultLayout>
   );
