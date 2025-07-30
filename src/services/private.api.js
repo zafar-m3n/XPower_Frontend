@@ -20,20 +20,23 @@ const loginUser = async (data) => {
 /* Product Functions          */
 /* ========================== */
 
-const fetchAllProducts = async (page = 1, limit = 10) => {
-  return await instance.apiClient.get(`/api/v1/products?page=${page}&limit=${limit}`, {
+const fetchAllProducts = async (page = 1, limit = 10, search = "") => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: limit.toString(),
+  });
+
+  if (search.trim() !== "") {
+    params.append("search", search.trim());
+  }
+
+  return await instance.apiClient.get(`/api/v1/products?${params.toString()}`, {
     headers: instance.defaultHeaders(),
   });
 };
 
 const fetchProductDetails = async (id) => {
   return await instance.apiClient.get(`/api/v1/products/${id}`, {
-    headers: instance.defaultHeaders(),
-  });
-};
-
-const searchProducts = async (query) => {
-  return await instance.apiClient.get(`/api/v1/products/search?query=${query}`, {
     headers: instance.defaultHeaders(),
   });
 };
@@ -93,7 +96,6 @@ const privateAPI = {
   // Products
   fetchAllProducts,
   fetchProductDetails,
-  searchProducts,
   uploadProductsExcel,
 
   // Reports
