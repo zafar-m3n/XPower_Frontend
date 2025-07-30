@@ -50,6 +50,62 @@ const uploadProductsExcel = async (formData) => {
 };
 
 /* ========================== */
+/* Category Functions         */
+/* ========================== */
+
+const fetchAllCategories = async () => {
+  return await instance.apiClient.get("/api/v1/categories", {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const createCategory = async (data) => {
+  return await instance.apiClient.post("/api/v1/categories", data, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const updateCategory = async (id, data) => {
+  return await instance.apiClient.put(`/api/v1/categories/${id}`, data, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const deleteCategory = async (id) => {
+  return await instance.apiClient.delete(`/api/v1/categories/${id}`, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+/* ========================== */
+/* Warehouse Functions        */
+/* ========================== */
+
+const fetchAllWarehouses = async () => {
+  return await instance.apiClient.get("/api/v1/warehouses", {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const createWarehouse = async (data) => {
+  return await instance.apiClient.post("/api/v1/warehouses", data, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const updateWarehouse = async (id, data) => {
+  return await instance.apiClient.put(`/api/v1/warehouses/${id}`, data, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const deleteWarehouse = async (id) => {
+  return await instance.apiClient.delete(`/api/v1/warehouses/${id}`, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+/* ========================== */
 /* Report & Dashboard         */
 /* ========================== */
 
@@ -97,6 +153,18 @@ const privateAPI = {
   fetchAllProducts,
   fetchProductDetails,
   uploadProductsExcel,
+
+  // Categories
+  fetchAllCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+
+  // Warehouses
+  fetchAllWarehouses,
+  createWarehouse,
+  updateWarehouse,
+  deleteWarehouse,
 
   // Reports
   getDashboardStats,
