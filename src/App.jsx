@@ -14,6 +14,7 @@ import WarehousesPage from "@/pages/warehouses";
 import PrivateRoute from "@/components/PrivateRoute";
 import PublicRoute from "@/components/PublicRoute";
 import token from "@/lib/utilities";
+import Inventory from "@/pages/inventory";
 
 function App() {
   const protectedRoutes = [
@@ -22,6 +23,7 @@ function App() {
     { path: "/reports", element: ReportsPage },
     { path: "/categories", element: CategoriesPage },
     { path: "/warehouses", element: WarehousesPage },
+    { path: "/inventory", element: Inventory },
   ];
 
   const publicRoutes = [

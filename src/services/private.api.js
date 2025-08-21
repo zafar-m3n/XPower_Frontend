@@ -53,9 +53,10 @@ const uploadProductsExcel = async (formData) => {
 /* Category Functions         */
 /* ========================== */
 
-const fetchAllCategories = async () => {
+const fetchAllCategories = async ({ page = 1, limit = 10 } = {}) => {
   return await instance.apiClient.get("/api/v1/categories", {
     headers: instance.defaultHeaders(),
+    params: { page, limit },
   });
 };
 
