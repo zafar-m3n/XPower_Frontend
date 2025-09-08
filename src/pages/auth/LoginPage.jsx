@@ -1,3 +1,4 @@
+// src/pages/auth/LoginPage.jsx
 import React, { useState } from "react";
 import AuthLayout from "@/layouts/AuthLayout";
 import { useForm } from "react-hook-form";
@@ -25,9 +26,7 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
@@ -38,13 +37,19 @@ const LoginPage = () => {
       });
 
       if (res.data.code === "OK") {
-        Notification.success(res.data.data?.message || "Login successful!");
+        const { token: accessToken, user, message, expiresIn } = res.data.data || {};
 
-        token.setAuthToken(res.data.data.token);
-        token.setUserData(res.data.data.user);
+        Notification.success(message || "Login successful!");
 
-        const userData = res.data.data.user;
-        if (userData.role === "admin") {
+        const expiresAtMs = typeof expiresIn === "number" ? Date.now() + expiresIn * 1000 : null;
+        token.setAuthToken(accessToken, expiresAtMs);
+        token.setUserData(user);
+
+        // Schedule auto-logout at JWT exp (or fallback expiresAtMs)
+        token.scheduleAutoLogout(() => token.logout("/login"));
+
+        // Route by role
+        if (user?.role === "admin") {
           navigate("/admin/dashboard");
         } else {
           navigate("/dashboard");
@@ -55,13 +60,8 @@ const LoginPage = () => {
     } catch (error) {
       const status = error.response?.status;
       let msg = "Login failed. Please try again.";
-
-      if (status === 400) {
-        msg = error.response?.data?.error || "Invalid email or password.";
-      } else if (status === 500) {
-        msg = "Server error. Please try again later.";
-      }
-
+      if (status === 400) msg = error.response?.data?.error || "Invalid email or password.";
+      else if (status === 500) msg = "Server error. Please try again later.";
       Notification.error(msg);
     } finally {
       setIsSubmitting(false);
@@ -88,7 +88,7 @@ const LoginPage = () => {
           <AccentButton type="submit" loading={isSubmitting} spinner={<Spinner color="white" />} text="Login" />
 
           <p className="text-center text-sm text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <a href="/register" className="text-accent font-medium">
               Register
             </a>

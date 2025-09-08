@@ -1,6 +1,7 @@
-import React from "react";
+// src/App.jsx
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 import RegisterPage from "@/pages/auth/RegisterPage";
 import LoginPage from "@/pages/auth/LoginPage";
@@ -10,13 +11,35 @@ import ProductsPage from "@/pages/products";
 import ReportsPage from "@/pages/reports";
 import CategoriesPage from "@/pages/categories";
 import WarehousesPage from "@/pages/warehouses";
+import Inventory from "@/pages/inventory";
 
 import PrivateRoute from "@/components/PrivateRoute";
 import PublicRoute from "@/components/PublicRoute";
 import token from "@/lib/utilities";
-import Inventory from "@/pages/inventory";
 
 function App() {
+  // Boot-time guard + auto-logout scheduling
+  useEffect(() => {
+    token.initAuthGuard(
+      () => {
+        // onLogout — only fire this toast when user previously had a token
+        if (token.isAuthenticated()) {
+          // unlikely because logout clears it; extra guard anyway
+          toast.dismiss();
+          toast.info("Your session expired. Please log in again.");
+        } else {
+          // If we got here via cross-tab or expired-on-load, still show once
+          toast.dismiss();
+          toast.info("Your session expired. Please log in again.");
+        }
+        token.logout("/login");
+      },
+      () => {
+        // onLogin (optional)
+      }
+    );
+  }, []);
+
   const protectedRoutes = [
     { path: "/dashboard", element: DashboardPage },
     { path: "/products", element: ProductsPage },
@@ -37,7 +60,13 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={token.isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />}
+            element={
+              token.isAuthenticated() && !token.isTokenExpired() ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
           />
 
           {protectedRoutes.map((route, idx) => (
@@ -69,10 +98,10 @@ function App() {
       <ToastContainer
         position="top-right"
         autoClose={2500}
-        hideProgressBar={true}
-        closeOnClick={true}
+        hideProgressBar
+        closeOnClick
         draggable={false}
-        pauseOnHover={true}
+        pauseOnHover
         theme="light"
       />
     </>

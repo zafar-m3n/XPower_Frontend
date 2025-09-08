@@ -1,16 +1,14 @@
+// src/components/SidebarMenu.jsx
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/Icon";
 import token from "@/lib/utilities";
 
 const SidebarMenu = ({ menuItems }) => {
   const location = useLocation();
-  const navigate = useNavigate();
 
   const handleLogout = () => {
-    token.removeAuthToken();
-    token.removeUserData();
-    navigate("/login");
+    token.logout("/login");
   };
 
   return (
