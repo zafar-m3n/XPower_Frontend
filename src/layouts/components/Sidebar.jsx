@@ -8,6 +8,7 @@ const Sidebar = ({ menuOpen }) => {
     { label: "Products", icon: "mdi:package-variant", path: "/products" },
     { label: "Inventory Manager", icon: "mdi:package-variant", path: "/inventory" },
     { label: "Reports", icon: "mdi:file-chart-outline", path: "/reports" },
+    { label: "Users", icon: "mdi:account-group-outline", path: "/users" },
     { label: "Logout", icon: "mdi:logout", action: "logout" },
   ];
 

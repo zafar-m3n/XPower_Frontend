@@ -142,6 +142,41 @@ const downloadReportPDF = async (type) => {
 };
 
 /* ========================== */
+/* User Functions (CRUD)      */
+/* ========================== */
+
+const fetchAllUsers = async ({ page = 1, limit = 10, q = "" } = {}) => {
+  return await instance.apiClient.get("/api/v1/users", {
+    headers: instance.defaultHeaders(),
+    params: { page, limit, q },
+  });
+};
+
+const fetchUserById = async (id) => {
+  return await instance.apiClient.get(`/api/v1/users/${id}`, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const createUser = async (data) => {
+  return await instance.apiClient.post("/api/v1/users", data, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const updateUser = async (id, data) => {
+  return await instance.apiClient.put(`/api/v1/users/${id}`, data, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+const deleteUser = async (id) => {
+  return await instance.apiClient.delete(`/api/v1/users/${id}`, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+/* ========================== */
 /* Export API                 */
 /* ========================== */
 
@@ -173,6 +208,13 @@ const privateAPI = {
   getStockByWarehouseReport,
   getOutOfStockReport,
   downloadReportPDF,
+
+  // Users
+  fetchAllUsers,
+  fetchUserById,
+  createUser,
+  updateUser,
+  deleteUser,
 };
 
 export default privateAPI;

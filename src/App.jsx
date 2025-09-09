@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
-import RegisterPage from "@/pages/auth/RegisterPage";
+// import RegisterPage from "@/pages/auth/RegisterPage";
 import LoginPage from "@/pages/auth/LoginPage";
 
 import DashboardPage from "@/pages/dashboard";
@@ -12,6 +12,7 @@ import ReportsPage from "@/pages/reports";
 import CategoriesPage from "@/pages/categories";
 import WarehousesPage from "@/pages/warehouses";
 import Inventory from "@/pages/inventory";
+import UsersPage from "@/pages/users";
 
 import PrivateRoute from "@/components/PrivateRoute";
 import PublicRoute from "@/components/PublicRoute";
@@ -47,10 +48,11 @@ function App() {
     { path: "/categories", element: CategoriesPage },
     { path: "/warehouses", element: WarehousesPage },
     { path: "/inventory", element: Inventory },
+    { path: "/users", element: UsersPage },
   ];
 
   const publicRoutes = [
-    { path: "/register", element: RegisterPage },
+    // { path: "/register", element: RegisterPage },
     { path: "/login", element: LoginPage },
   ];
 
