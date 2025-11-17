@@ -15,6 +15,8 @@ const reportConfig = {
       { key: "brand", label: "Brand" },
       { key: "cost", label: "Cost" },
       { key: "total_quantity", label: "Qty" },
+      { key: "grn_date", label: "GRN Date" }, // NEW
+      { key: "remarks", label: "Remarks" }, // NEW
     ],
     dataKey: "low_stock",
   },
@@ -26,6 +28,8 @@ const reportConfig = {
       { key: "code", label: "Code" },
       { key: "brand", label: "Brand" },
       { key: "cost", label: "Cost" },
+      { key: "grn_date", label: "GRN Date" }, // NEW
+      { key: "remarks", label: "Remarks" }, // NEW
     ],
     dataKey: "out_of_stock",
   },
@@ -41,15 +45,34 @@ const reportConfig = {
   },
 };
 
+const formatDate = (value) => {
+  if (!value) return "-";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "-";
+  return d.toLocaleDateString("en-GB"); // e.g. 17/11/2025
+};
+
+const formatCurrency = (value) => {
+  if (value === null || value === undefined || value === "") return "-";
+  return `Rs. ${value}`;
+};
+
+const truncateText = (text, maxLength = 60) => {
+  if (!text) return "-";
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + "…";
+};
+
 const ReportTable = ({ reportKey }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const printRef = useRef();
 
-  const config = reportConfig[reportKey];
+  const config = reportKey ? reportConfig[reportKey] : null;
 
   const fetchData = async () => {
+    if (!config) return;
     setLoading(true);
     try {
       const res = await config.api();
@@ -66,6 +89,7 @@ const ReportTable = ({ reportKey }) => {
   };
 
   const downloadPDF = async () => {
+    if (!config) return;
     try {
       setIsGeneratingPDF(true);
       const response = await API.private.downloadReportPDF(reportKey);
@@ -85,10 +109,12 @@ const ReportTable = ({ reportKey }) => {
   };
 
   useEffect(() => {
-    if (reportKey) fetchData();
+    if (reportKey && config) {
+      fetchData();
+    }
   }, [reportKey]);
 
-  if (!reportKey) return null;
+  if (!reportKey || !config) return null;
 
   return (
     <div className="space-y-4">
@@ -111,7 +137,29 @@ const ReportTable = ({ reportKey }) => {
             <Spinner />
           </div>
         ) : (
-          <Table columns={config.columns} data={data} />
+          <Table
+            columns={config.columns}
+            data={data}
+            renderCell={(row, col) => {
+              if (col.key === "cost") {
+                return formatCurrency(row.cost);
+              }
+
+              if (col.key === "grn_date") {
+                return formatDate(row.grn_date);
+              }
+
+              if (col.key === "remarks") {
+                return (
+                  <span title={row.remarks || ""} className="block max-w-xs truncate">
+                    {truncateText(row.remarks, 80)}
+                  </span>
+                );
+              }
+
+              return row[col.key];
+            }}
+          />
         )}
       </div>
     </div>

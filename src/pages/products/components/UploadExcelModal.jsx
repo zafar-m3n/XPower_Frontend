@@ -72,6 +72,23 @@ const UploadExcelModal = ({ isOpen, onClose, onUploadSuccess }) => {
           )}
         </div>
 
+        {/* Hint about expected columns */}
+        <div className="text-xs text-gray-500 space-y-1">
+          <p className="font-semibold">Expected columns:</p>
+          <p>
+            <span className="font-medium">Required:</span> <code>name</code>, <code>code</code>, <code>cost</code>,{" "}
+            <code>category_name</code>
+          </p>
+          <p>
+            <span className="font-medium">Optional:</span> <code>brand</code>, <code>description</code>,{" "}
+            <code>warehouse_name</code>, <code>quantity</code>, <code>grn_date</code>, <code>image_url</code>,{" "}
+            <code>remarks</code>
+          </p>
+          <p className="italic">
+            Use <code>grn_date</code> in a valid date format (e.g. <code>2025-11-17</code>).
+          </p>
+        </div>
+
         {/* Upload button */}
         <AccentButton
           text={uploading ? "Uploading..." : "Upload"}

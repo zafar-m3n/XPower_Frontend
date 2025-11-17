@@ -8,9 +8,24 @@ const columns = [
   { key: "brand", label: "Brand" },
   { key: "category", label: "Category" }, // category.name
   { key: "cost", label: "Cost" },
+  { key: "grn_date", label: "GRN Date" }, // NEW
   { key: "total_stock", label: "Stock" },
+  { key: "remarks", label: "Remarks" }, // NEW (truncated)
   { key: "actions", label: "Actions" },
 ];
+
+const formatDate = (value) => {
+  if (!value) return "-";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "-";
+  return d.toLocaleDateString("en-GB"); // e.g. 17/11/2025
+};
+
+const truncateText = (text, maxLength = 50) => {
+  if (!text) return "-";
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + "…";
+};
 
 const ProductTable = ({ products = [], onView = () => {} }) => {
   return (
@@ -29,6 +44,18 @@ const ProductTable = ({ products = [], onView = () => {} }) => {
 
         if (col.key === "cost") {
           return `Rs. ${row.cost}`;
+        }
+
+        if (col.key === "grn_date") {
+          return formatDate(row.grn_date);
+        }
+
+        if (col.key === "remarks") {
+          return (
+            <span title={row.remarks || ""} className="block max-w-xs truncate">
+              {truncateText(row.remarks, 60)}
+            </span>
+          );
         }
 
         return row[col.key];
