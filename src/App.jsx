@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
-// import RegisterPage from "@/pages/auth/RegisterPage";
+import RegisterPage from "@/pages/auth/RegisterPage";
 import LoginPage from "@/pages/auth/LoginPage";
 
 import DashboardPage from "@/pages/dashboard";
@@ -54,7 +54,7 @@ function App() {
   ];
 
   const publicRoutes = [
-    // { path: "/register", element: RegisterPage },
+    { path: "/register", element: RegisterPage },
     { path: "/login", element: LoginPage },
   ];
 
