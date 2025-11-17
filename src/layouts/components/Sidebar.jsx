@@ -29,6 +29,7 @@ const Sidebar = ({ menuOpen, setMenuOpen, onExpandChange }) => {
   const menuItems = [
     { label: "Dashboard", icon: "mdi:view-dashboard-outline", path: "/dashboard" },
     { label: "Products", icon: "mdi:package-variant", path: "/products" },
+    { label: "Stock Out", icon: "mdi:package", path: "/stock" },
     { label: "Inventory Manager", icon: "mdi:package-variant", path: "/inventory" },
     { label: "Reports", icon: "mdi:file-chart-outline", path: "/reports" },
     { label: "Users", icon: "mdi:account-group-outline", path: "/users" },

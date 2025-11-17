@@ -177,6 +177,42 @@ const deleteUser = async (id) => {
 };
 
 /* ========================== */
+/* Stock Functions (NEW)      */
+/* ========================== */
+
+/**
+ * Fetch warehouses and available stock for a given product.
+ * GET /api/v1/stock/product/:productId/warehouses
+ */
+const fetchWarehousesForProduct = async (productId) => {
+  return await instance.apiClient.get(`/api/v1/stock/product/${productId}/warehouses`, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+/**
+ * Create a stock-out transaction (multi-warehouse supported).
+ * POST /api/v1/stock/out
+ *
+ * Expected payload:
+ * {
+ *   productId,
+ *   transactionDate,
+ *   reference_no?,   // optional
+ *   remarks?,        // optional
+ *   lines: [
+ *     { warehouseId, quantity },
+ *     ...
+ *   ]
+ * }
+ */
+const createStockOut = async (data) => {
+  return await instance.apiClient.post("/api/v1/stock/out", data, {
+    headers: instance.defaultHeaders(),
+  });
+};
+
+/* ========================== */
 /* Export API                 */
 /* ========================== */
 
@@ -215,6 +251,10 @@ const privateAPI = {
   createUser,
   updateUser,
   deleteUser,
+
+  // Stock (NEW)
+  fetchWarehousesForProduct,
+  createStockOut,
 };
 
 export default privateAPI;

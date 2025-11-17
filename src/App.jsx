@@ -13,6 +13,7 @@ import CategoriesPage from "@/pages/categories";
 import WarehousesPage from "@/pages/warehouses";
 import Inventory from "@/pages/inventory";
 import UsersPage from "@/pages/users";
+import StockOut from "@/pages/stock";
 
 import PrivateRoute from "@/components/PrivateRoute";
 import PublicRoute from "@/components/PublicRoute";
@@ -49,6 +50,7 @@ function App() {
     { path: "/warehouses", element: WarehousesPage },
     { path: "/inventory", element: Inventory },
     { path: "/users", element: UsersPage },
+    { path: "/stock", element: StockOut },
   ];
 
   const publicRoutes = [
