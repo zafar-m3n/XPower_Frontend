@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import SidebarMenu from "./SidebarMenu";
 import logo from "@/assets/logo.png";
+import favicon from "@/assets/favicon.png";
+import useWidth from "@/hooks/useWidth";
+import token from "@/lib/utilities";
 
-const Sidebar = ({ menuOpen }) => {
-  const commonItems = [
+const Sidebar = ({ menuOpen, setMenuOpen, onExpandChange }) => {
+  const { width, breakpoints } = useWidth();
+  const isDesktop = width >= breakpoints.md;
+
+  const user = token.getUserData?.() || {};
+  const role = user?.role?.value || "guest";
+
+  const [isHoverExpanded, setIsHoverExpanded] = useState(false);
+
+  const openExpanded = useCallback(() => {
+    if (!isDesktop) return;
+    setIsHoverExpanded(true);
+    onExpandChange?.(true);
+  }, [isDesktop, onExpandChange]);
+
+  const closeExpanded = useCallback(() => {
+    if (!isDesktop) return;
+    setIsHoverExpanded(false);
+    onExpandChange?.(false);
+  }, [isDesktop, onExpandChange]);
+
+  const menuItems = [
     { label: "Dashboard", icon: "mdi:view-dashboard-outline", path: "/dashboard" },
     { label: "Products", icon: "mdi:package-variant", path: "/products" },
     { label: "Inventory Manager", icon: "mdi:package-variant", path: "/inventory" },
@@ -13,17 +36,57 @@ const Sidebar = ({ menuOpen }) => {
   ];
 
   return (
-    <div
-      className={`fixed top-0 bottom-0 left-0 w-64 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out
-        ${menuOpen ? "translate-x-0" : "-translate-x-full"}
-        md:translate-x-0 md:relative md:z-40 md:flex flex-col`}
-    >
-      <div className="flex justify-between items-center p-4 shadow-sm">
-        <img src={logo} alt="XPower Logo" className="h-8 w-auto" />
+    <>
+      {/* Desktop: single fixed sidebar that expands its width on hover */}
+      <div
+        className={`
+          hidden md:flex md:fixed md:inset-y-0 md:left-0 md:z-50
+          bg-white shadow-xl h-full
+          ${isHoverExpanded ? "w-64" : "w-16"}
+          transition-[width] duration-300 ease-in-out
+          flex-col
+        `}
+        onMouseEnter={openExpanded}
+        onMouseLeave={closeExpanded}
+        onFocusCapture={openExpanded}
+        onBlurCapture={closeExpanded}
+        aria-label="Primary navigation"
+      >
+        <div className="shadow p-4 flex items-center">
+          {isHoverExpanded ? (
+            <img src={logo} alt="XPower Logo" className="h-8 w-auto object-contain" />
+          ) : (
+            <img src={favicon} alt="XPower" className="h-8 w-8 object-contain" />
+          )}
+        </div>
+
+        <SidebarMenu menuItems={menuItems} isExpanded={isHoverExpanded} />
       </div>
 
-      <SidebarMenu menuItems={commonItems} />
-    </div>
+      {/* Mobile drawer remains the same */}
+      <div
+        className={`
+          md:hidden fixed top-0 bottom-0 left-0 z-50 w-64 bg-white shadow-xl
+          transform transition-transform duration-300 ease-in-out
+          ${menuOpen ? "translate-x-0" : "-translate-x-64"}
+        `}
+        aria-hidden={!menuOpen}
+      >
+        <div className="flex justify-between items-center p-4 border-b">
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="XPower Logo" className="h-8 w-auto object-contain" />
+          </div>
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="rounded p-2 hover:bg-gray-100 focus:outline-none focus:ring"
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
+        </div>
+        <SidebarMenu menuItems={menuItems} isExpanded />
+      </div>
+    </>
   );
 };
 
