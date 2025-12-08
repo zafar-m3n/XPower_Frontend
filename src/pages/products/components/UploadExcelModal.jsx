@@ -85,7 +85,13 @@ const UploadExcelModal = ({ isOpen, onClose, onUploadSuccess }) => {
             <code>remarks</code>
           </p>
           <p className="italic">
-            Use <code>grn_date</code> in a valid date format (e.g. <code>2025-11-17</code>).
+            Use <code>grn_date</code> in <span className="font-medium">dd/mm/yyyy</span> format (e.g.{" "}
+            <code>17/11/2025</code>).
+          </p>
+          <p className="italic">Completely empty rows will be ignored during import.</p>
+          <p className="italic">
+            If you enter a <code>name</code> for the first item in a group and leave the next rows blank, that last
+            non-empty <code>name</code> will be reused for those codes (variants).
           </p>
         </div>
 
