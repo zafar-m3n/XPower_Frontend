@@ -41,6 +41,23 @@ const Dashboard = () => {
     fetchDashboardData();
   }, []);
 
+  const formatCurrency = (value) => {
+    if (value == null) return "-";
+    // Change currency code if needed
+    try {
+      return value.toLocaleString("en-LK", {
+        style: "currency",
+        currency: "LKR",
+        maximumFractionDigits: 2,
+      });
+    } catch {
+      // Fallback if locale/currency not supported for some reason
+      return `Rs. ${Number(value).toLocaleString("en-LK", {
+        maximumFractionDigits: 2,
+      })}`;
+    }
+  };
+
   const stats = [
     {
       title: "Total Products",
@@ -62,6 +79,12 @@ const Dashboard = () => {
       value: dashboardStats?.category_count,
       icon: "mdi:shape-outline",
     },
+    {
+      title: "Total Inventory Value",
+      value: dashboardStats?.total_value,
+      icon: "mdi:cash-multiple",
+      isCurrency: true,
+    },
   ];
 
   const columns = [
@@ -82,7 +105,7 @@ const Dashboard = () => {
         ) : (
           <>
             {/* Stat Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               {stats.map((stat, i) => (
                 <div
                   key={i}
@@ -93,7 +116,9 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <p className="text-xs font-medium text-gray-500">{stat.title}</p>
-                    <h2 className="text-xl font-bold text-gray-900">{stat.value}</h2>
+                    <h2 className="text-xl font-bold text-gray-900">
+                      {stat.isCurrency ? formatCurrency(stat.value) : stat.value ?? "-"}
+                    </h2>
                   </div>
                 </div>
               ))}
