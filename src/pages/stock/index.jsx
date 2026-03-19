@@ -50,9 +50,9 @@ const StockOut = () => {
     () =>
       products.map((p) => ({
         value: p.id,
-        label: `${p.name} (${p.code})`,
+        label: `${p.description} ${p.name} (${p.code})`,
       })),
-    [products]
+    [products],
   );
 
   // ==========================
@@ -107,7 +107,7 @@ const StockOut = () => {
         const qty = Number(w.quantityOut || 0);
         return sum + (Number.isNaN(qty) ? 0 : qty);
       }, 0),
-    [warehouses]
+    [warehouses],
   );
 
   // ==========================
